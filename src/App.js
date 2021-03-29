@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import './styles/app.scss';
+import ColourImage from './components/ColourImage';
 
 function App() {
+  const MAX_COL = 156;
+  const MIN_COL = 0;
+  const COL_STEP = 8;
+
+  const getColourItem = () => {
+    const colourArr = [];
+
+    for (let r = MIN_COL; r < MAX_COL; r += COL_STEP) {
+      for (let g = MIN_COL; g < MAX_COL; g += COL_STEP) {
+        for (let b = MIN_COL; b < MAX_COL; b += COL_STEP) {
+          colourArr.push(
+            <ColourImage
+              red={r}
+              green={g}
+              blue={b}
+            />,
+          );
+        }
+      }
+    }
+
+    return colourArr;
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="app">
+      <header className="app-header">
+        Colours
       </header>
+
+      <section className="app-body">
+        {
+            getColourItem()
+        }
+
+      </section>
     </div>
   );
 }

@@ -1,0 +1,56 @@
+// $background-color: #0d1420;
+$background-color: #fafafa;
+$header-height: 50px;
+$side-padding: 10px;
+
+$img-height: 10px;
+$img-width: 10px;
+
+.app {
+  background-color: $background-color;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  .app-header {
+    color: rgb(26, 21, 21);
+    font-size: 1.2em;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    height: $header-height;
+    position: fixed;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: $background-color;
+
+    z-index: 10;
+
+  }
+  
+  .app-body {
+    color: white;
+    font-size: 1.2em;
+    margin: $header-height $side-padding;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax($img-width, 1fr));
+
+
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+
+
+    .colour-image {
+      width: 100%;
+      min-height: $img-height;
+    
+    }
+  }
+
+}
+
