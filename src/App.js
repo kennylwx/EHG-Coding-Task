@@ -3,18 +3,22 @@ import './styles/app.scss';
 import html2canvas from 'html2canvas';
 
 function App() {
-  const MAX_COL = 256;
-  const MIN_COL = 0;
-  const COL_STEP = 8;
+  const MAX_COL = 256; // Maximum colour starting value 256
+  const MIN_COL = 0; // Minimum colour starting value 0
+  const COL_STEP = 8; // Colour step
 
-  const PIXEL_SIZE = 4;
+  const PIXEL_SIZE = 2; // Change the size for each colour pixel
 
+  // Convert a RGB value to Hex value
   const componentToHex = (c) => {
     const hex = c.toString(16);
     return hex.length === 1 ? `0${hex}` : hex;
   };
+
+  // Convert RGB to Hex
   const rgbToHex = (r, g, b) => `#${componentToHex(r)}${componentToHex(g)}${componentToHex(b)}`;
 
+  // Generate all the different RGB values
   const getColourItem = () => {
     const array = [];
 
@@ -35,23 +39,23 @@ function App() {
 
   // When mounted
   useEffect(() => {
+    // Retrieve all components
     const loading = document.getElementById('loading');
-
     const parentElem = document.getElementById('app-body');
-    parentElem.style.width = '100%';
-
     const showcaseElem = document.getElementById('image-showcase');
+    parentElem.style.width = '100%';
     showcaseElem.style.width = '80%';
 
     // Get all the different variation of colours with 32 steps
     const getColours = getColourItem();
 
+    // Create an element with a pixel size for each colour variation into a container
     for (let i = 0; i < getColours.length; i += 1) {
       const node = document.createElement('div');
       node.style.width = `${PIXEL_SIZE}px`;
       node.style.height = `${PIXEL_SIZE}px`;
 
-      // Fix RGB for with -1, because the values are from 0...255
+      // Fix RGB with -1, because the values are from 0...255
       const tempR = getColours[i].red - 1;
       const tempG = getColours[i].green - 1;
       const tempB = getColours[i].blue - 1;
@@ -61,13 +65,16 @@ function App() {
       parentElem.appendChild(node);
     }
 
-    // Convert the component with all images, into an image
+    // Convert all the colour variations into an image
     html2canvas(parentElem).then((canvas) => {
+      // Add the image to the screen
       document.getElementById('image-showcase').appendChild(canvas);
+
+      // Remove loading
       loading.style.display = 'none';
     });
 
-    // Remove the initial component
+    // Remove the actual color variation container
     parentElem.style.display = 'none';
   });
 
