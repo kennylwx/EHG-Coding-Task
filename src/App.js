@@ -6,11 +6,8 @@ function App() {
   const MAX_COL = 256;
   const MIN_COL = 0;
   const COL_STEP = 8;
-  const COL_LIMIT = (MAX_COL / COL_STEP) ** 3;
 
-  const IMG_HEIGHT = 512;
-  const IMG_WIDTH = 256;
-  const PIXEL_SIZE = (IMG_HEIGHT * IMG_WIDTH) / COL_LIMIT;
+  const PIXEL_SIZE = 4;
 
   const componentToHex = (c) => {
     const hex = c.toString(16);
@@ -36,32 +33,41 @@ function App() {
     return array;
   };
 
+  // When mounted
   useEffect(() => {
     const loading = document.getElementById('loading');
 
     const parentElem = document.getElementById('app-body');
-    parentElem.style.width = `${IMG_HEIGHT}px`;
-    parentElem.style.height = `${IMG_WIDTH}px`;
+    parentElem.style.width = '100%';
 
     const showcaseElem = document.getElementById('image-showcase');
-    showcaseElem.style.width = `${IMG_HEIGHT}px`;
-    showcaseElem.style.height = `${IMG_WIDTH}px`;
+    showcaseElem.style.width = '80%';
 
+    // Get all the different variation of colours with 32 steps
     const getColours = getColourItem();
 
     for (let i = 0; i < getColours.length; i += 1) {
       const node = document.createElement('div');
       node.style.width = `${PIXEL_SIZE}px`;
       node.style.height = `${PIXEL_SIZE}px`;
-      node.style.background = rgbToHex(getColours[i].red, getColours[i].green, getColours[i].blue);
+
+      // Fix RGB for with -1, because the values are from 0...255
+      const tempR = getColours[i].red - 1;
+      const tempG = getColours[i].green - 1;
+      const tempB = getColours[i].blue - 1;
+
+      // Add colour items into the parent
+      node.style.background = rgbToHex(tempR, tempG, tempB);
       parentElem.appendChild(node);
     }
 
+    // Convert the component with all images, into an image
     html2canvas(parentElem).then((canvas) => {
       document.getElementById('image-showcase').appendChild(canvas);
       loading.style.display = 'none';
     });
 
+    // Remove the initial component
     parentElem.style.display = 'none';
   });
 
@@ -71,10 +77,6 @@ function App() {
         <span>Colours</span>
         <span className="ah-colour-num">{ getColourItem().length}</span>
       </header>
-
-      <div className="input-fields">
-        {`${IMG_HEIGHT}px x ${IMG_WIDTH}px `}
-      </div>
 
       <div className="loading-placeholder" id="loading">
         Loading...

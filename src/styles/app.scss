@@ -50,25 +50,16 @@ $img-width: 4px;
   .app-body {
     color: white;
     font-size: 1.2em;
-    margin: $header-height $side-padding;
-
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax($img-width, 1fr));
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    margin: $header-height auto;
+    
+    display: flex;
+    flex-wrap: wrap;
 
     .colour-image {
-      width: 100%;
-      min-height: $img-height;
+      // width: 100%;
+      // height: 100%;
+ 
     }
-  }
-
-  .input-fields {
-    margin: $header-height auto 0;
-    color: rgb(26, 21, 21);
-    font-size: 1.2em;
-    font-weight: 400;
-
-
   }
 
   .loading-placeholder {
@@ -78,10 +69,6 @@ $img-width: 4px;
 
   .image-showcase {
     margin: $header-height auto;
-
-    height: 100px;
-    width: 100px;
-    // background-color: orange;
 
     canvas {
       width: 100% !important;
