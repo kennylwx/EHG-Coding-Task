@@ -1,97 +1,79 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import './styles/app.scss';
+import PropTypes from 'prop-types';
+import html2canvas from 'html2canvas';
 import ColourImage from './components/ColourImage';
 
 function App() {
   const MAX_COL = 256;
   const MIN_COL = 0;
   const COL_STEP = 8;
-  const TIME_INTERVAL = 1;
-  const COL_LIMIT = 32 ** 3;
+  const COL_LIMIT = (MAX_COL / COL_STEP) ** 3;
 
-  const [colourItem, setColourItem] = useState([]);
-  const [colourUsed, setColourUsed] = useState([]);
-  const [colourNum, setColourNum] = useState(0);
+  const IMG_HEIGHT = 256;
+  const IMG_WIDTH = 128;
+  const PIXEL_SIZE = (IMG_HEIGHT * IMG_WIDTH) / COL_LIMIT;
 
-  const getRandomNumber = (start, end, increments) => {
-    const numbers = [];
-    for (let n = start; n <= end; n += increments) {
-      numbers.push(n);
+  const componentToHex = (c) => {
+    const hex = c.toString(16);
+    return hex.length === 1 ? `0${hex}` : hex;
+  };
+  const rgbToHex = (r, g, b) => `#${componentToHex(r)}${componentToHex(g)}${componentToHex(b)}`;
+
+  const getColourItem = () => {
+    const array = [];
+
+    for (let r = MIN_COL + COL_STEP; r <= MAX_COL; r += COL_STEP) {
+      for (let g = MIN_COL + COL_STEP; g <= MAX_COL; g += COL_STEP) {
+        for (let b = MIN_COL + COL_STEP; b <= MAX_COL; b += COL_STEP) {
+          array.push({
+            red: r,
+            green: g,
+            blue: b,
+          });
+        }
+      }
     }
 
-    const randomIndex = Math.floor(Math.random() * numbers.length);
-    return numbers[randomIndex];
+    return array;
   };
 
   useEffect(() => {
-    // Get Random colours with values from 8,16,24,..,256
-    const getRandomRGB = () => {
-      const red = getRandomNumber(MIN_COL + COL_STEP, MAX_COL, COL_STEP);
-      const green = getRandomNumber(MIN_COL + COL_STEP, MAX_COL, COL_STEP);
-      const blue = getRandomNumber(MIN_COL + COL_STEP, MAX_COL, COL_STEP);
+    const parentElem = document.getElementById('app-body');
 
-      return { red, green, blue };
-    };
+    const showcaseElem = document.getElementById('image-showcase');
+    showcaseElem.style.width = `${IMG_HEIGHT}px`;
+    showcaseElem.style.height = `${IMG_WIDTH}px`;
 
-    // Check if colour is being used
-    const isColourUsed = (r, g, b) => {
-      for (let x = 0; x < colourUsed.length; x += 1) {
-        const { red, green, blue } = colourUsed[x];
+    const getColours = getColourItem();
 
-        if (red === r && green === g && blue === b) {
-          console.log(`FOUND RGB: ${red}, ${green}, ${blue} === ${r},${g},${b}`);
+    for (let i = 0; i < getColours.length; i += 1) {
+      const node = document.createElement('div');
+      node.style.width = `${PIXEL_SIZE}px`;
+      node.style.height = `${PIXEL_SIZE}px`;
+      node.style.background = rgbToHex(getColours[i].red, getColours[i].green, getColours[i].blue);
+      parentElem.appendChild(node);
+    }
 
-          return true;
-        }
-      }
+    html2canvas(parentElem).then((canvas) => {
+      document.getElementById('image-showcase').appendChild(canvas);
+    });
 
-      return false;
-    };
-
-    const getColourItem = () => {
-      const rgb = getRandomRGB();
-      let { red } = rgb;
-      let { green } = rgb;
-      let { blue } = rgb;
-
-      // Find another set of colour if it has been used
-      while (isColourUsed(red, green, blue)) {
-        const newRgb = getRandomRGB();
-        red = newRgb.red;
-        green = newRgb.green;
-        blue = newRgb.blue;
-      }
-
-      // Add colour to the list
-      console.log(`RGB: ${red}, ${green}, ${blue}`);
-      const newColour = { red, green, blue };
-      setColourUsed([...colourUsed, newColour]);
-
-      // Display new image item
-      const newItem = <ColourImage id={colourNum} red={red} green={green} blue={blue} />;
-      setColourItem([...colourItem, newItem]);
-
-      // Update number of image item counter
-      setColourNum(colourNum + 1);
-    };
-
-    const interval = setInterval(() => {
-      getColourItem();
-    }, TIME_INTERVAL);
-    return () => clearInterval(interval);
-  }, [colourItem, colourNum, colourUsed]);
+    parentElem.style.display = 'none';
+  });
 
   return (
     <div className="app">
-      <header className="app-header">
+      <header className="app-header" id="app-header">
         <span>Colours</span>
-        <span className="ah-colour-num">{colourNum}</span>
+        <span className="ah-colour-num">{ getColourItem().length}</span>
       </header>
 
-      <section className="app-body">
-        {colourItem}
-      </section>
+      <section className="app-body" id="app-body" />
+
+      <section className="image-showcase" id="image-showcase" />
+
     </div>
   );
 }

@@ -61,7 +61,19 @@ $img-width: 4px;
     .colour-image {
       width: 100%;
       min-height: $img-height;
-    
+    }
+  }
+
+  .image-showcase {
+    margin: $header-height $side-padding;
+
+    height: 100px;
+    width: 100px;
+    background-color: orange;
+
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
     }
   }
 

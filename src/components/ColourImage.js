@@ -13,7 +13,6 @@ function ColourImage({
     return hex.length === 1 ? `0${hex}` : hex;
   };
   const rgbToHex = (r, g, b) => `#${componentToHex(r)}${componentToHex(g)}${componentToHex(b)}`;
-
   return (
     <div
       className="colour-image"
