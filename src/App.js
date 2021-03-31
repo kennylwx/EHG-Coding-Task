@@ -1,9 +1,6 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './styles/app.scss';
-import PropTypes from 'prop-types';
 import html2canvas from 'html2canvas';
-import ColourImage from './components/ColourImage';
 
 function App() {
   const MAX_COL = 48;
@@ -14,10 +11,6 @@ function App() {
   const IMG_HEIGHT = 512;
   const IMG_WIDTH = 256;
   const PIXEL_SIZE = (IMG_HEIGHT * IMG_WIDTH) / COL_LIMIT;
-
-  const [height, setHeight] = useState(IMG_HEIGHT);
-  const [width, setWidth] = useState(IMG_WIDTH);
-  const [trigger, setTrigger] = useState(false);
 
   const componentToHex = (c) => {
     const hex = c.toString(16);
@@ -71,10 +64,6 @@ function App() {
     parentElem.style.display = 'none';
     loading.style.display = 'none';
   });
-
-  const refreshImage = () => {
-
-  };
 
   return (
     <div className="app">
