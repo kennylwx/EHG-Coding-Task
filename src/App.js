@@ -3,7 +3,7 @@ import './styles/app.scss';
 import html2canvas from 'html2canvas';
 
 function App() {
-  const MAX_COL = 48;
+  const MAX_COL = 256;
   const MIN_COL = 0;
   const COL_STEP = 8;
   const COL_LIMIT = (MAX_COL / COL_STEP) ** 3;
@@ -59,10 +59,10 @@ function App() {
 
     html2canvas(parentElem).then((canvas) => {
       document.getElementById('image-showcase').appendChild(canvas);
+      loading.style.display = 'none';
     });
 
     parentElem.style.display = 'none';
-    loading.style.display = 'none';
   });
 
   return (
