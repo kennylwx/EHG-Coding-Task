@@ -64,16 +64,40 @@ $img-width: 4px;
     }
   }
 
+  .input-fields {
+    margin: $header-height auto 0;
+    color: rgb(26, 21, 21);
+    font-size: 1.2em;
+    font-weight: 600;
+
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  .loading-placeholder {
+    color: black;
+    margin: $header-height auto 0;
+  }
+
   .image-showcase {
-    margin: $header-height $side-padding;
+    margin: $header-height auto;
 
     height: 100px;
     width: 100px;
-    background-color: orange;
+    // background-color: orange;
 
     canvas {
       width: 100% !important;
       height: 100% !important;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    .image-showcase {
+      width: 100% !important;
     }
   }
 

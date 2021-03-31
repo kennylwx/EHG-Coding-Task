@@ -6,14 +6,18 @@ import html2canvas from 'html2canvas';
 import ColourImage from './components/ColourImage';
 
 function App() {
-  const MAX_COL = 256;
+  const MAX_COL = 48;
   const MIN_COL = 0;
   const COL_STEP = 8;
   const COL_LIMIT = (MAX_COL / COL_STEP) ** 3;
 
-  const IMG_HEIGHT = 256;
-  const IMG_WIDTH = 128;
+  const IMG_HEIGHT = 512;
+  const IMG_WIDTH = 256;
   const PIXEL_SIZE = (IMG_HEIGHT * IMG_WIDTH) / COL_LIMIT;
+
+  const [height, setHeight] = useState(IMG_HEIGHT);
+  const [width, setWidth] = useState(IMG_WIDTH);
+  const [trigger, setTrigger] = useState(false);
 
   const componentToHex = (c) => {
     const hex = c.toString(16);
@@ -40,7 +44,11 @@ function App() {
   };
 
   useEffect(() => {
+    const loading = document.getElementById('loading');
+
     const parentElem = document.getElementById('app-body');
+    parentElem.style.width = `${IMG_HEIGHT}px`;
+    parentElem.style.height = `${IMG_WIDTH}px`;
 
     const showcaseElem = document.getElementById('image-showcase');
     showcaseElem.style.width = `${IMG_HEIGHT}px`;
@@ -61,7 +69,12 @@ function App() {
     });
 
     parentElem.style.display = 'none';
+    loading.style.display = 'none';
   });
+
+  const refreshImage = () => {
+
+  };
 
   return (
     <div className="app">
@@ -69,6 +82,14 @@ function App() {
         <span>Colours</span>
         <span className="ah-colour-num">{ getColourItem().length}</span>
       </header>
+
+      <div className="input-fields">
+        {`${IMG_HEIGHT}px x ${IMG_WIDTH}px `}
+      </div>
+
+      <div className="loading-placeholder" id="loading">
+        Loading...
+      </div>
 
       <section className="app-body" id="app-body" />
 
